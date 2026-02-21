@@ -56,7 +56,12 @@
       from { opacity: 0; transform: translateY(8px); }
       to { opacity: 1; transform: translateY(0); }
     }
-    .heroTop { display:flex; gap:14px; flex-wrap: wrap; align-items:center; justify-content: space-between; }
+    .heroTop {
+      display:grid;
+      gap: 10px;
+      justify-items: center;
+      text-align: center;
+    }
     .brand {
       font-family: ImpactBundled, "Arial Black", "Impact", sans-serif;
       letter-spacing: .8px;
@@ -65,77 +70,30 @@
       text-transform: uppercase;
       color: var(--ink);
     }
-    .heroActions { display:flex; gap:10px; flex-wrap: wrap; }
+    .heroInfo {
+      margin-top: 7px;
+      display: inline-flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 6px;
+      max-width: 920px;
+    }
     .sectionHead { display:grid; gap:4px; margin-bottom: 12px; }
     .sectionKicker {
-      font-size: 11px;
+      font-size: 12px;
       letter-spacing: 1.2px;
       text-transform: uppercase;
       color: var(--muted);
       font-weight: 700;
     }
     .sectionTitle { font-size: 20px; font-weight: 800; color: var(--ink); }
-    .stepRail {
-      display:grid;
-      grid-template-columns: repeat(4, minmax(120px, 1fr));
-      gap: 8px;
-      margin-top: 14px;
-    }
-    .stepPill {
-      display:flex;
-      align-items:center;
-      gap: 8px;
-      padding: 8px 10px;
-      border:1px solid var(--bd);
-      border-radius: 999px;
-      background: #fff5e6;
-      color: var(--muted);
-      font-size: 12px;
-      font-weight: 700;
-      transition: .2s ease;
-    }
-    .stepNo {
-      width: 18px;
-      height: 18px;
-      border-radius: 999px;
-      display:inline-grid;
-      place-items:center;
-      font-size: 11px;
-      line-height: 1;
-      border:1px solid currentColor;
-    }
-    .stepPill[data-state="active"] {
-      background: linear-gradient(90deg, #ffe9ad, #ffd26e);
-      color: #41270d;
-      border-color: #e9b357;
-    }
-    .stepPill[data-state="done"] {
-      background: #ecf8e6;
-      color: #27562e;
-      border-color: #95c998;
-    }
-    .stepPill[data-state="locked"] {
-      background: #f1eadf;
-      color: #9e907f;
-      border-color: #d8cab8;
-    }
-    .workflowNote {
-      margin-top: 10px;
-      padding: 8px 10px;
-      border-radius: 10px;
-      border:1px dashed #d2b98f;
-      background: #fff7e6;
-      color: #5f4a31;
-      font-size: 13px;
-      line-height: 1.35;
-    }
     .row { display:flex; gap:12px; flex-wrap: wrap; align-items: flex-end; }
-    label { font-size: 12px; color: var(--muted); display:block; margin-bottom:6px; font-weight: 600; }
+    label { font-size: 13px; color: var(--muted); display:block; margin-bottom:6px; font-weight: 600; }
     input[type="text"], textarea {
       width: 360px; max-width: 100%;
       background:#fffcf7; color:var(--fg);
       border:1px solid #d8cbb7; border-radius: 12px;
-      padding: 10px 12px; font-size: 14px; outline: none;
+      padding: 10px 12px; font-size: 15px; outline: none;
       box-shadow: inset 0 1px 0 rgba(255,255,255,.8);
     }
     input[type="text"]:focus, textarea:focus { border-color:#e0aa57; box-shadow: 0 0 0 3px rgba(255,183,0,.2); }
@@ -154,15 +112,42 @@
     button.primary { background:linear-gradient(120deg, #ffd66f, #ffbf3f); border-color:#dba24a; }
     button.danger { background:#fff0ed; border-color:#e1b3ad; color: var(--danger); }
     button:disabled { opacity:.45; cursor:not-allowed; }
-    .small { font-size: 12px; color: var(--muted); line-height: 1.35; }
+    .small { font-size: 13px; color: var(--muted); line-height: 1.35; }
     .pill {
       display:inline-block;
       padding:2px 8px;
       border:1px solid #dfccb1;
       border-radius: 999px;
-      font-size: 12px;
+      font-size: 13px;
       color: #70583a;
       background: #fff9ea;
+    }
+    .queueCta {
+      background: linear-gradient(140deg, #d9f0ff, #b7dcf6 60%, #9cc9ed);
+      border-color: #7eb1da;
+      color: #10314b;
+      box-shadow: 0 10px 20px rgba(47, 101, 145, 0.22);
+      font-size: 15px;
+      letter-spacing: .2px;
+      padding: 11px 14px;
+    }
+    .queueCta:hover:enabled {
+      background: linear-gradient(140deg, #e6f5ff, #c7e4fa 60%, #a9d2f1);
+      border-color: #6ea3cf;
+      box-shadow: 0 12px 22px rgba(47, 101, 145, 0.28);
+    }
+    .queueCtaWrap {
+      display: flex;
+      justify-content: center;
+      margin-top: 8px;
+      margin-bottom: 2px;
+    }
+    .queueCtaFrame {
+      border: 3px solid #567f9d;
+      border-radius: 16px;
+      padding: 9px 12px;
+      background: #eef7ff;
+      box-shadow: 0 10px 18px rgba(26, 57, 82, 0.16);
     }
     .grid {
       display:grid;
@@ -183,6 +168,15 @@
     .queuePanel { display:grid; gap:10px; background:var(--card-solid); }
     .queueHeader { display:flex; align-items:center; justify-content: space-between; gap: 10px; }
     .queueList { display:grid; gap: 10px; max-height: 62vh; overflow: auto; padding-right: 2px; }
+    .queueFooterActions {
+      margin-top: 2px;
+      display:flex;
+      gap:10px;
+      flex-wrap: wrap;
+    }
+    .queueFooterActions button {
+      flex: 1 1 145px;
+    }
     .qItem {
       display:grid;
       grid-template-columns: 72px 1fr;
@@ -201,17 +195,16 @@
       display:block;
     }
     .qMeta { display:grid; gap: 8px; }
-    .qTitle { font-size: 13px; font-weight: 800; line-height: 1.2; color: var(--ink); }
-    .qSub { font-size: 12px; color: var(--muted); line-height: 1.25; }
+    .qTitle { font-size: 14px; font-weight: 800; line-height: 1.2; color: var(--ink); }
+    .qSub { font-size: 13px; color: var(--muted); line-height: 1.25; }
     .qActions { display:flex; gap: 8px; flex-wrap: wrap; }
     code { color:#7f5600; }
     @media (max-width: 980px) {
       .grid { grid-template-columns: 1fr; }
-      .stepRail { grid-template-columns: 1fr 1fr; }
-      .heroActions { width: 100%; }
-      .heroActions button { flex: 1 1 160px; }
       .brand { font-size: 24px; }
       .queueList { max-height: none; }
+      .queueCtaFrame { width: min(420px, 100%); }
+      .queueCtaFrame button { width: 100%; }
     }
   </style>
 </head>
@@ -221,24 +214,13 @@
       <div class="heroTop">
         <div>
           <div class="brand">VOID Template Batch Renderer</div>
-          <div class="small" style="margin-top:7px;">
+          <div class="small heroInfo">
             Output: <span class="pill">1080 × 1350</span>
             Text: <span class="pill">Impact</span> <span class="pill">ALL CAPS</span> <span class="pill">#FFB700</span>
             Template file: <span class="pill">VOID_IG_TEMPLATE.png</span>
           </div>
         </div>
-        <div class="heroActions">
-          <button id="savePhotosBtn" disabled>Save to Photos</button>
-          <button id="exportZipBtn" class="primary" disabled>Export ZIP</button>
-        </div>
       </div>
-      <div class="stepRail">
-        <div id="stepLoad" class="stepPill" data-state="active"><span class="stepNo">1</span>Load</div>
-        <div id="stepCompose" class="stepPill" data-state="locked"><span class="stepNo">2</span>Compose</div>
-        <div id="stepQueue" class="stepPill" data-state="locked"><span class="stepNo">3</span>Queue</div>
-        <div id="stepExport" class="stepPill" data-state="locked"><span class="stepNo">4</span>Save</div>
-      </div>
-      <div id="flowHint" class="workflowNote">Step 1: Load one or more images to start your batch.</div>
     </div>
 
     <div class="card">
@@ -250,19 +232,7 @@
         <div>
           <label>Batch images</label>
           <input id="images" type="file" accept="image/*" multiple />
-          <div class="small">Pick all source photos. Use Prev/Next to move through the set.</div>
-        </div>
-
-        <div style="flex:1"></div>
-
-        <div>
-          <label>Font</label>
-          <div class="small">Uses bundled Impact font from <code>fonts/impact.ttf</code> (or woff/woff2).</div>
-        </div>
-
-        <div class="row">
-          <button id="prevBtn" disabled>Prev</button>
-          <button id="nextBtn" disabled>Next</button>
+          <div class="small">Pick all source photos. Queueing auto-advances through the set.</div>
         </div>
       </div>
     </div>
@@ -286,23 +256,37 @@
 
           <div>
             <label>Zoom</label>
-            <input id="zoom" type="range" min="0.5" max="3.0" value="1.0" step="0.01" />
-            <div class="small">Drag image inside frame to position.</div>
+            <input id="zoom" type="range" min="0.5" max="3.5" value="1.0" step="0.01" />
+            <div class="small">Drag to position. On touch: pinch to zoom and twist to rotate.</div>
           </div>
 
           <div>
-            <label>Text size</label>
-            <input id="textSize" type="range" min="48" max="180" value="118" step="1" />
-            <div class="small"><span id="textSizeVal">118</span> px</div>
+            <label>Text size cap</label>
+            <input id="textSize" type="range" min="48" max="320" value="220" step="1" />
+            <div class="small"><span id="textSizeVal">220</span> px</div>
           </div>
 
-          <div class="row">
-            <button id="queueBtn" class="primary" disabled>Add to queue (auto-next)</button>
+          <div>
+            <label>Text vertical offset</label>
+            <input id="textOffset" type="range" min="-120" max="180" value="0" step="1" />
+            <div class="small"><span id="textOffsetVal">0</span> px</div>
           </div>
+
+          <div>
+            <label>Line spacing</label>
+            <input id="lineGap" type="range" min="0.4" max="2.4" value="1.0" step="0.05" />
+            <div class="small"><span id="lineGapVal">1.00</span>x</div>
+          </div>
+
         </div>
 
         <div class="canvasWrap" style="margin-top:12px;">
           <canvas id="preview" width="1080" height="1350"></canvas>
+          <div class="queueCtaWrap">
+            <div class="queueCtaFrame">
+              <button id="queueBtn" class="queueCta" disabled>ADD TO QUEUE (AUTO-NEXT)</button>
+            </div>
+          </div>
           <div class="small">Preview matches export exactly (1080×1350). Reposition by dragging inside the image window.</div>
           <div class="small" id="status"></div>
         </div>
@@ -321,6 +305,10 @@
         </div>
         <div id="queueList" class="queueList"></div>
         <div class="small">Edit reopens that queued item’s settings. Remove deletes it from the ZIP.</div>
+        <div class="queueFooterActions">
+          <button id="savePhotosBtn" disabled>Save to Photos</button>
+          <button id="exportZipBtn" class="primary" disabled>Export ZIP</button>
+        </div>
       </div>
     </div>
   </div>
@@ -353,6 +341,9 @@
       y: BAR_NATIVE_Y * SCALE,
       h: EXPORT_H - (BAR_NATIVE_Y * SCALE)
     };
+    const LABEL_PADDING_X = 40;
+    const LABEL_PADDING_Y = 10;
+    const LABEL_GAP_RATIO = 0.16;
 
     const state = {
       templateImg: null,
@@ -366,9 +357,14 @@
       offsetX: 0,
       offsetY: 0,
       scale: 1,
+      rotation: 0,
 
       dragging: false,
       dragStart: null,
+      activePointers: new Map(),
+      pinchGesture: null,
+      labelZoneTop: BAR.y,
+      labelZoneBottom: EXPORT_H,
 
       // bundled Impact font
       impactFontReady: false,
@@ -392,31 +388,26 @@
     const clearQueueBtn = el('clearQueueBtn');
 
     const zoomInput = el('zoom');
+    const ZOOM_MIN = parseFloat(zoomInput.min) || 0.5;
+    const ZOOM_MAX = parseFloat(zoomInput.max) || 3.5;
     const labelText = el('labelText');
     const textSize = el('textSize');
     const textSizeVal = el('textSizeVal');
+    const textOffset = el('textOffset');
+    const textOffsetVal = el('textOffsetVal');
+    const lineGap = el('lineGap');
+    const lineGapVal = el('lineGapVal');
 
     const currentLabelEl = el('currentLabel');
     const statusEl = el('status');
     const queueCountEl = el('queueCount');
     const queueListEl = el('queueList');
-    const flowHintEl = el('flowHint');
-    const stepLoadEl = el('stepLoad');
-    const stepComposeEl = el('stepCompose');
-    const stepQueueEl = el('stepQueue');
-    const stepExportEl = el('stepExport');
 
     function setStatus(msg) { statusEl.textContent = msg || ''; }
     function clamp(v, min, max) { return Math.max(min, Math.min(max, v)); }
     function delay(ms) { return new Promise(resolve => setTimeout(resolve, ms)); }
-    function setStepState(stepEl, stateName) {
-      if (!stepEl) return;
-      stepEl.dataset.state = stateName;
-    }
-    function setFlowHint(msg) {
-      if (!flowHintEl) return;
-      flowHintEl.textContent = msg;
-    }
+    function getTextOffsetY() { return clamp(parseInt(textOffset.value, 10) || 0, -120, 180); }
+    function getLineGapMult() { return clamp(parseFloat(lineGap.value) || 1, 0.4, 2.4); }
 
     function getFontFamily() {
       return 'ImpactBundled';
@@ -461,6 +452,55 @@
       return Math.max(sx, sy);
     }
 
+    function detectBottomBarTop() {
+      if (!state.templateImg) return BAR.y;
+      const c = document.createElement('canvas');
+      c.width = EXPORT_W;
+      c.height = EXPORT_H;
+      const cctx = c.getContext('2d', { willReadFrequently: true });
+      cctx.drawImage(state.templateImg, 0, 0, EXPORT_W, EXPORT_H);
+      const data = cctx.getImageData(0, 0, EXPORT_W, EXPORT_H).data;
+
+      const xStart = Math.floor(EXPORT_W * 0.04);
+      const xEnd = Math.ceil(EXPORT_W * 0.96);
+      const yStart = Math.floor(EXPORT_H * 0.55);
+      const sampleStep = 2;
+      let run = 0;
+      let detected = -1;
+
+      for (let y = yStart; y < EXPORT_H; y++) {
+        let dark = 0;
+        let total = 0;
+        for (let x = xStart; x < xEnd; x += sampleStep) {
+          const i = ((y * EXPORT_W) + x) * 4;
+          const r = data[i];
+          const g = data[i + 1];
+          const b = data[i + 2];
+          const a = data[i + 3];
+          total++;
+          if (a > 220 && r < 22 && g < 22 && b < 22) dark++;
+        }
+        const ratio = total ? (dark / total) : 0;
+        if (ratio >= 0.9) {
+          run++;
+          if (run >= 8) {
+            detected = y - run + 1;
+            break;
+          }
+        } else {
+          run = 0;
+        }
+      }
+
+      if (detected < 0) return BAR.y;
+      return clamp(detected, BAR.y - 120, BAR.y + 220);
+    }
+
+    function syncLabelZoneFromTemplate() {
+      state.labelZoneTop = detectBottomBarTop();
+      state.labelZoneBottom = EXPORT_H;
+    }
+
     async function loadTemplate() {
       return new Promise((resolve, reject) => {
         const img = new Image();
@@ -480,70 +520,136 @@
       });
     }
 
-    function renderWithSettings(imgEl, settings, text, fontPx) {
-      // settings: {offsetX, offsetY, scale, textSize}
-      ctx.clearRect(0, 0, EXPORT_W, EXPORT_H);
+    function normalizeLines(text) {
+      const cleaned = (text || '').split('\n').map(s => s.trim()).filter(Boolean);
+      if (cleaned.length <= 2) return cleaned.map(s => s.toUpperCase());
+      const first = cleaned[0];
+      const rest = cleaned.slice(1).join(' ');
+      return [first.toUpperCase(), rest.toUpperCase()];
+    }
 
-      // template
-      ctx.drawImage(state.templateImg, 0, 0, EXPORT_W, EXPORT_H);
+    function measureLineMetrics(targetCtx, line, size) {
+      targetCtx.font = `${size}px ${getFontFamily()}`;
+      const m = targetCtx.measureText(line);
+      const ascent = m.actualBoundingBoxAscent || (size * 0.78);
+      const descent = m.actualBoundingBoxDescent || (size * 0.22);
+      return {
+        width: m.width,
+        ascent,
+        descent,
+        height: ascent + descent
+      };
+    }
 
-      if (imgEl) {
-        // clip to frame and draw image
-        ctx.save();
-        ctx.beginPath();
-        ctx.rect(FRAME.x, FRAME.y, FRAME.w, FRAME.h);
-        ctx.clip();
+    function computeSmartLabelLayout(targetCtx, text, requestedMaxSize, lineGapMult) {
+      const lines = normalizeLines(text);
+      if (!lines.length) return null;
 
-        const base = defaultCoverScale(imgEl);
-        const finalScale = base * settings.scale;
+      const maxWidth = EXPORT_W - (LABEL_PADDING_X * 2);
+      const zoneTop = state.labelZoneTop ?? BAR.y;
+      const zoneBottom = state.labelZoneBottom ?? EXPORT_H;
+      const maxHeight = Math.max(20, (zoneBottom - zoneTop) - (LABEL_PADDING_Y * 2));
+      const minSize = 8;
+      const cap = clamp(Math.round(requestedMaxSize || 220), minSize, 420);
+      const gapRatio = LABEL_GAP_RATIO * clamp(lineGapMult || 1, 0.4, 2.4);
 
-        const drawW = imgEl.naturalWidth * finalScale;
-        const drawH = imgEl.naturalHeight * finalScale;
+      let low = minSize;
+      let high = cap;
+      let best = minSize;
+      let bestMetrics = [];
+      let bestGap = minSize * gapRatio;
+      let bestTotalH = 0;
 
-        const frameCx = FRAME.x + FRAME.w / 2;
-        const frameCy = FRAME.y + FRAME.h / 2;
-
-        const x = frameCx - (drawW / 2) + settings.offsetX;
-        const y = frameCy - (drawH / 2) + settings.offsetY;
-
-        ctx.drawImage(imgEl, x, y, drawW, drawH);
-        ctx.restore();
-
-        // template on top to keep border edges clean
-        ctx.drawImage(state.templateImg, 0, 0, EXPORT_W, EXPORT_H);
-      }
-
-      // label
-      const raw = (text || '').trim();
-      if (raw) {
-        if (!state.impactFontReady) return;
-        const linesRaw = raw.split('\n').map(s => s.trim()).filter(Boolean);
-        const lines = linesRaw.map(s => s.toUpperCase());
-
-        const size = fontPx ?? settings.textSize;
-        const gap = size * 0.18;
-
-        ctx.save();
-        ctx.fillStyle = '#FFB700';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.font = `${size}px ${getFontFamily()}`;
-
-        const cx = EXPORT_W / 2;
-        const cy = BAR.y + (BAR.h / 2);
-
-        if (lines.length === 1) {
-          ctx.fillText(lines[0], cx, cy);
+      while (low <= high) {
+        const mid = Math.floor((low + high) / 2);
+        const gap = mid * gapRatio;
+        const metrics = lines.map(ln => measureLineMetrics(targetCtx, ln, mid));
+        const totalH = metrics.reduce((sum, mt) => sum + mt.height, 0) + ((lines.length - 1) * gap);
+        const maxLineW = Math.max(...metrics.map(mt => mt.width));
+        if (totalH <= maxHeight && maxLineW <= maxWidth) {
+          best = mid;
+          bestMetrics = metrics;
+          bestGap = gap;
+          bestTotalH = totalH;
+          low = mid + 1;
         } else {
-          const totalH = (lines.length * size) + ((lines.length - 1) * gap);
-          let y = cy - (totalH / 2) + (size / 2);
-          for (const ln of lines) {
-            ctx.fillText(ln, cx, y);
-            y += size + gap;
-          }
+          high = mid - 1;
         }
-        ctx.restore();
       }
+
+      if (!bestMetrics.length) {
+        bestMetrics = lines.map(ln => measureLineMetrics(targetCtx, ln, best));
+        bestGap = best * gapRatio;
+        bestTotalH = bestMetrics.reduce((sum, mt) => sum + mt.height, 0) + ((lines.length - 1) * bestGap);
+      }
+      return { lines, size: best, gap: bestGap, totalH: bestTotalH, metrics: bestMetrics };
+    }
+
+    function drawLabel(targetCtx, text, requestedMaxSize, textOffsetY, lineGapMult) {
+      const raw = (text || '').trim();
+      if (!raw || !state.impactFontReady) return;
+      const layout = computeSmartLabelLayout(targetCtx, raw, requestedMaxSize, lineGapMult);
+      if (!layout) return;
+
+      const cx = EXPORT_W / 2;
+      const zoneTop = (state.labelZoneTop ?? BAR.y) + LABEL_PADDING_Y;
+      const zoneBottom = (state.labelZoneBottom ?? EXPORT_H) - LABEL_PADDING_Y;
+      const zoneCenterY = ((zoneTop + zoneBottom) / 2) + (textOffsetY || 0);
+
+      targetCtx.save();
+      targetCtx.fillStyle = '#FFB700';
+      targetCtx.textAlign = 'center';
+      targetCtx.textBaseline = 'alphabetic';
+      targetCtx.font = `${layout.size}px ${getFontFamily()}`;
+
+      let top = zoneCenterY - (layout.totalH / 2);
+      for (let i = 0; i < layout.lines.length; i++) {
+        const lineMetrics = layout.metrics[i];
+        const baselineY = top + lineMetrics.ascent;
+        targetCtx.fillText(layout.lines[i], cx, baselineY);
+        top += lineMetrics.height + layout.gap;
+      }
+      targetCtx.restore();
+    }
+
+    function drawImageInFrame(targetCtx, imgEl, settings) {
+      if (!imgEl) return;
+      targetCtx.save();
+      targetCtx.beginPath();
+      targetCtx.rect(FRAME.x, FRAME.y, FRAME.w, FRAME.h);
+      targetCtx.clip();
+
+      const base = defaultCoverScale(imgEl);
+      const finalScale = base * settings.scale;
+      const drawW = imgEl.naturalWidth * finalScale;
+      const drawH = imgEl.naturalHeight * finalScale;
+      const frameCx = FRAME.x + FRAME.w / 2;
+      const frameCy = FRAME.y + FRAME.h / 2;
+
+      targetCtx.translate(frameCx + settings.offsetX, frameCy + settings.offsetY);
+      targetCtx.rotate(settings.rotation || 0);
+      targetCtx.drawImage(imgEl, -drawW / 2, -drawH / 2, drawW, drawH);
+      targetCtx.restore();
+    }
+
+    function drawComposed(targetCtx, imgEl, settings, text, fontPx) {
+      targetCtx.clearRect(0, 0, EXPORT_W, EXPORT_H);
+      targetCtx.drawImage(state.templateImg, 0, 0, EXPORT_W, EXPORT_H);
+      if (imgEl) {
+        drawImageInFrame(targetCtx, imgEl, settings);
+      }
+      targetCtx.drawImage(state.templateImg, 0, 0, EXPORT_W, EXPORT_H);
+      drawLabel(
+        targetCtx,
+        text,
+        fontPx ?? settings.textSize,
+        settings.textOffsetY ?? 0,
+        settings.lineGapMult ?? 1
+      );
+    }
+
+    function renderWithSettings(imgEl, settings, text, fontPx) {
+      drawComposed(ctx, imgEl, settings, text, fontPx);
     }
 
     function renderPreview() {
@@ -552,7 +658,10 @@
         offsetX: state.offsetX,
         offsetY: state.offsetY,
         scale: state.scale,
-        textSize: parseInt(textSize.value, 10)
+        rotation: state.rotation,
+        textSize: clamp(parseInt(textSize.value, 10) || 220, 48, 320),
+        textOffsetY: getTextOffsetY(),
+        lineGapMult: getLineGapMult()
       };
       renderWithSettings(state.currentImgEl, settings, labelText.value);
     }
@@ -564,44 +673,22 @@
       const hasImages = state.images.length > 0;
       const hasCurrent = !!state.currentImgEl;
       const hasQueue = state.queue.length > 0;
-      prevBtn.disabled = !(hasImages && state.currentIndex > 0);
-      nextBtn.disabled = !(hasImages && state.currentIndex < state.images.length - 1);
+      if (prevBtn) prevBtn.disabled = !(hasImages && state.currentIndex > 0);
+      if (nextBtn) nextBtn.disabled = !(hasImages && state.currentIndex < state.images.length - 1);
       queueBtn.disabled = !(hasCurrent && state.impactFontReady);
       savePhotosBtn.disabled = !hasQueue;
 
       exportZipBtn.disabled = !hasQueue;
       clearQueueBtn.disabled = !hasQueue;
-      queueBtn.textContent = state._editingId ? 'Update queued item' : 'Add to queue (auto-next)';
+      queueBtn.textContent = state._editingId ? 'Update queued item' : 'ADD TO QUEUE (AUTO-NEXT)';
 
       if (!hasImages) currentLabelEl.textContent = 'None loaded';
       else currentLabelEl.textContent = `${state.currentIndex + 1}/${state.images.length}: ${state.images[state.currentIndex].name}`;
 
       queueCountEl.textContent = String(state.queue.length);
       textSizeVal.textContent = textSize.value;
-
-      if (!hasImages) {
-        setStepState(stepLoadEl, 'active');
-        setStepState(stepComposeEl, 'locked');
-        setStepState(stepQueueEl, 'locked');
-        setStepState(stepExportEl, 'locked');
-      } else {
-        setStepState(stepLoadEl, 'done');
-        setStepState(stepComposeEl, 'active');
-        setStepState(stepQueueEl, hasQueue ? 'done' : 'active');
-        setStepState(stepExportEl, hasQueue ? 'active' : 'locked');
-      }
-
-      if (!state.impactFontReady) {
-        setFlowHint('Add licensed Impact at fonts/impact.ttf first, then reload.');
-      } else if (!hasImages) {
-        setFlowHint('Step 1: Load one or more images to start your batch.');
-      } else if (state._editingId) {
-        setFlowHint('Editing an existing queued card. Click Update queued item when ready.');
-      } else if (!hasQueue) {
-        setFlowHint('Step 2: Position image, write all-caps text, then Add to queue.');
-      } else {
-        setFlowHint(`${state.queue.length} item${state.queue.length === 1 ? '' : 's'} ready. Step 4: Save to Photos or export ZIP.`);
-      }
+      textOffsetVal.textContent = textOffset.value;
+      lineGapVal.textContent = Number(lineGap.value).toFixed(2);
 
       renderQueueList();
     }
@@ -616,6 +703,11 @@
       state.offsetX = 0;
       state.offsetY = 0;
       state.scale = 1;
+      state.rotation = 0;
+      state.dragging = false;
+      state.dragStart = null;
+      state.activePointers.clear();
+      state.pinchGesture = null;
       zoomInput.value = '1.0';
 
       setStatus('');
@@ -633,6 +725,30 @@
         .slice(0, 80) || 'output';
     }
 
+    function stripExtension(name) {
+      return String(name || '').replace(/\.[^.]+$/, '');
+    }
+
+    function makeBaseNameFromText(text, fallbackName) {
+      const textFlat = String(text || '').replace(/\s+/g, ' ').trim();
+      const fallback = stripExtension(fallbackName || 'output');
+      return slugify(textFlat || fallback);
+    }
+
+    function makeUniqueFilename(baseName, editingId) {
+      const used = new Set(
+        state.queue
+          .filter(item => item.id !== editingId)
+          .map(item => String(item.filename || '').toLowerCase())
+      );
+      let n = 0;
+      while (true) {
+        const candidate = n === 0 ? `${baseName}.png` : `${baseName}-${n}.png`;
+        if (!used.has(candidate.toLowerCase())) return candidate;
+        n++;
+      }
+    }
+
     async function makeThumbBlob(imgEl, settings, text) {
       requireImpactFontLoaded();
       const c = document.createElement('canvas');
@@ -646,62 +762,7 @@
       full.height = EXPORT_H;
       const fctx = full.getContext('2d');
 
-      // render to fctx
-      fctx.drawImage(state.templateImg, 0, 0, EXPORT_W, EXPORT_H);
-
-      fctx.save();
-      fctx.beginPath();
-      fctx.rect(FRAME.x, FRAME.y, FRAME.w, FRAME.h);
-      fctx.clip();
-
-      const base = defaultCoverScale(imgEl);
-      const finalScale = base * settings.scale;
-
-      const drawW = imgEl.naturalWidth * finalScale;
-      const drawH = imgEl.naturalHeight * finalScale;
-
-      const frameCx = FRAME.x + FRAME.w / 2;
-      const frameCy = FRAME.y + FRAME.h / 2;
-
-      const x = frameCx - (drawW / 2) + settings.offsetX;
-      const y = frameCy - (drawH / 2) + settings.offsetY;
-
-      fctx.drawImage(imgEl, x, y, drawW, drawH);
-      fctx.restore();
-
-      fctx.drawImage(state.templateImg, 0, 0, EXPORT_W, EXPORT_H);
-
-      // label (scaled down)
-      const raw = (text || '').trim();
-      if (raw) {
-        const linesRaw = raw.split('\n').map(s => s.trim()).filter(Boolean);
-        const lines = linesRaw.map(s => s.toUpperCase());
-
-        // thumb uses proportional size
-        const size = settings.textSize;
-        const gap = size * 0.18;
-
-        fctx.save();
-        fctx.fillStyle = '#FFB700';
-        fctx.textAlign = 'center';
-        fctx.textBaseline = 'middle';
-        fctx.font = `${size}px ${getFontFamily()}`;
-
-        const cx = EXPORT_W / 2;
-        const cy = BAR.y + (BAR.h / 2);
-
-        if (lines.length === 1) {
-          fctx.fillText(lines[0], cx, cy);
-        } else {
-          const totalH = (lines.length * size) + ((lines.length - 1) * gap);
-          let yy = cy - (totalH / 2) + (size / 2);
-          for (const ln of lines) {
-            fctx.fillText(ln, cx, yy);
-            yy += size + gap;
-          }
-        }
-        fctx.restore();
-      }
+      drawComposed(fctx, imgEl, settings, text, settings.textSize);
 
       // scale to thumb
       cctx.drawImage(full, 0, 0, c.width, c.height);
@@ -717,63 +778,7 @@
       c.height = EXPORT_H;
       const cctx = c.getContext('2d');
 
-      // template
-      cctx.drawImage(state.templateImg, 0, 0, EXPORT_W, EXPORT_H);
-
-      // clipped image
-      cctx.save();
-      cctx.beginPath();
-      cctx.rect(FRAME.x, FRAME.y, FRAME.w, FRAME.h);
-      cctx.clip();
-
-      const base = defaultCoverScale(imgEl);
-      const finalScale = base * settings.scale;
-
-      const drawW = imgEl.naturalWidth * finalScale;
-      const drawH = imgEl.naturalHeight * finalScale;
-
-      const frameCx = FRAME.x + FRAME.w / 2;
-      const frameCy = FRAME.y + FRAME.h / 2;
-
-      const x = frameCx - (drawW / 2) + settings.offsetX;
-      const y = frameCy - (drawH / 2) + settings.offsetY;
-
-      cctx.drawImage(imgEl, x, y, drawW, drawH);
-      cctx.restore();
-
-      // template on top
-      cctx.drawImage(state.templateImg, 0, 0, EXPORT_W, EXPORT_H);
-
-      // label
-      const raw = (text || '').trim();
-      if (raw) {
-        const linesRaw = raw.split('\n').map(s => s.trim()).filter(Boolean);
-        const lines = linesRaw.map(s => s.toUpperCase());
-
-        const size = settings.textSize;
-        const gap = size * 0.18;
-
-        cctx.save();
-        cctx.fillStyle = '#FFB700';
-        cctx.textAlign = 'center';
-        cctx.textBaseline = 'middle';
-        cctx.font = `${size}px ${getFontFamily()}`;
-
-        const cx = EXPORT_W / 2;
-        const cy = BAR.y + (BAR.h / 2);
-
-        if (lines.length === 1) {
-          cctx.fillText(lines[0], cx, cy);
-        } else {
-          const totalH = (lines.length * size) + ((lines.length - 1) * gap);
-          let yy = cy - (totalH / 2) + (size / 2);
-          for (const ln of lines) {
-            cctx.fillText(ln, cx, yy);
-            yy += size + gap;
-          }
-        }
-        cctx.restore();
-      }
+      drawComposed(cctx, imgEl, settings, text, settings.textSize);
 
       const blob = await new Promise(res => c.toBlob(res, 'image/png'));
       return blob;
@@ -823,9 +828,12 @@
           state.offsetX = item.settings.offsetX;
           state.offsetY = item.settings.offsetY;
           state.scale = item.settings.scale;
+          state.rotation = item.settings.rotation || 0;
 
           zoomInput.value = String(state.scale);
-          textSize.value = String(item.settings.textSize);
+          textSize.value = String(item.settings.textSize || 220);
+          textOffset.value = String(item.settings.textOffsetY || 0);
+          lineGap.value = String(item.settings.lineGapMult || 1);
           labelText.value = item.text;
 
           // mark as "editing existing"
@@ -874,13 +882,36 @@
       return pos.x >= FRAME.x && pos.x <= FRAME.x + FRAME.w && pos.y >= FRAME.y && pos.y <= FRAME.y + FRAME.h;
     }
 
+    function pointerDistance(a, b) {
+      return Math.hypot(a.x - b.x, a.y - b.y);
+    }
+
+    function pointerAngle(a, b) {
+      return Math.atan2(b.y - a.y, b.x - a.x);
+    }
+
+    function angleDelta(current, start) {
+      let d = current - start;
+      while (d > Math.PI) d -= Math.PI * 2;
+      while (d < -Math.PI) d += Math.PI * 2;
+      return d;
+    }
+
     // Events
     textSize.addEventListener('input', () => {
       textSizeVal.textContent = textSize.value;
       renderPreview();
     });
+    textOffset.addEventListener('input', () => {
+      textOffsetVal.textContent = textOffset.value;
+      renderPreview();
+    });
+    lineGap.addEventListener('input', () => {
+      lineGapVal.textContent = Number(lineGap.value).toFixed(2);
+      renderPreview();
+    });
     zoomInput.addEventListener('input', () => {
-      state.scale = parseFloat(zoomInput.value);
+      state.scale = clamp(parseFloat(zoomInput.value), ZOOM_MIN, ZOOM_MAX);
       renderPreview();
     });
     labelText.addEventListener('input', renderPreview);
@@ -889,46 +920,93 @@
       if (!state.currentImgEl) return;
       const p = pointerPos(e);
       if (!isInFrame(p)) return;
-      state.dragging = true;
-      state.dragStart = { x: p.x, y: p.y, ox: state.offsetX, oy: state.offsetY };
+      state.activePointers.set(e.pointerId, p);
+      if (state.activePointers.size === 1) {
+        state.dragging = true;
+        state.dragStart = { pointerId: e.pointerId, x: p.x, y: p.y, ox: state.offsetX, oy: state.offsetY };
+      } else if (state.activePointers.size === 2) {
+        const [a, b] = Array.from(state.activePointers.values());
+        state.dragging = false;
+        state.dragStart = null;
+        state.pinchGesture = {
+          distance: pointerDistance(a, b),
+          angle: pointerAngle(a, b),
+          startScale: state.scale,
+          startRotation: state.rotation
+        };
+      }
       preview.setPointerCapture(e.pointerId);
     });
 
     preview.addEventListener('pointermove', (e) => {
-      if (!state.dragging || !state.dragStart) return;
       const p = pointerPos(e);
-      const dx = p.x - state.dragStart.x;
-      const dy = p.y - state.dragStart.y;
-      state.offsetX = state.dragStart.ox + dx;
-      state.offsetY = state.dragStart.oy + dy;
-      renderPreview();
+      if (state.activePointers.has(e.pointerId)) {
+        state.activePointers.set(e.pointerId, p);
+      }
+
+      if (state.activePointers.size >= 2 && state.pinchGesture) {
+        const [a, b] = Array.from(state.activePointers.values());
+        const dist = pointerDistance(a, b);
+        const ang = pointerAngle(a, b);
+        const scaleMul = state.pinchGesture.distance > 0 ? (dist / state.pinchGesture.distance) : 1;
+        state.scale = clamp(state.pinchGesture.startScale * scaleMul, ZOOM_MIN, ZOOM_MAX);
+        state.rotation = state.pinchGesture.startRotation + angleDelta(ang, state.pinchGesture.angle);
+        zoomInput.value = state.scale.toFixed(2);
+        renderPreview();
+        return;
+      }
+
+      if (state.dragging && state.dragStart && state.dragStart.pointerId === e.pointerId) {
+        const dx = p.x - state.dragStart.x;
+        const dy = p.y - state.dragStart.y;
+        state.offsetX = state.dragStart.ox + dx;
+        state.offsetY = state.dragStart.oy + dy;
+        renderPreview();
+      }
     });
 
-    preview.addEventListener('pointerup', (e) => {
-      state.dragging = false;
-      state.dragStart = null;
+    function endPointer(e) {
+      state.activePointers.delete(e.pointerId);
+      if (state.dragStart && state.dragStart.pointerId === e.pointerId) {
+        state.dragging = false;
+        state.dragStart = null;
+      }
+      if (state.activePointers.size < 2) {
+        state.pinchGesture = null;
+      }
       try { preview.releasePointerCapture(e.pointerId); } catch {}
-    });
+    }
 
-    prevBtn.addEventListener('click', async () => {
-      if (state.currentIndex > 0) {
-        state._editingId = null;
-        setStatus('');
-        await setCurrentIndex(state.currentIndex - 1);
-      }
-    });
+    preview.addEventListener('pointerup', endPointer);
+    preview.addEventListener('pointercancel', endPointer);
+    preview.addEventListener('pointerleave', endPointer);
 
-    nextBtn.addEventListener('click', async () => {
-      if (state.currentIndex < state.images.length - 1) {
-        state._editingId = null;
-        setStatus('');
-        await setCurrentIndex(state.currentIndex + 1);
-      }
-    });
+    if (prevBtn) {
+      prevBtn.addEventListener('click', async () => {
+        if (state.currentIndex > 0) {
+          state._editingId = null;
+          setStatus('');
+          await setCurrentIndex(state.currentIndex - 1);
+        }
+      });
+    }
+
+    if (nextBtn) {
+      nextBtn.addEventListener('click', async () => {
+        if (state.currentIndex < state.images.length - 1) {
+          state._editingId = null;
+          setStatus('');
+          await setCurrentIndex(state.currentIndex + 1);
+        }
+      });
+    }
 
     imagesInput.addEventListener('change', async (e) => {
       try {
-        if (!state.templateImg) state.templateImg = await loadTemplate();
+        if (!state.templateImg) {
+          state.templateImg = await loadTemplate();
+          syncLabelZoneFromTemplate();
+        }
 
         const files = Array.from(e.target.files || []).filter(f => f.type.startsWith('image/'));
         state.images = files;
@@ -938,8 +1016,12 @@
 
         labelText.value = '';
         zoomInput.value = '1.0';
-        textSize.value = '118';
-        textSizeVal.textContent = '118';
+        textSize.value = '220';
+        textSizeVal.textContent = '220';
+        textOffset.value = '0';
+        textOffsetVal.textContent = '0';
+        lineGap.value = '1.0';
+        lineGapVal.textContent = '1.00';
 
         if (files.length) {
           await setCurrentIndex(0);
@@ -964,7 +1046,10 @@
         offsetX: state.offsetX,
         offsetY: state.offsetY,
         scale: state.scale,
-        textSize: parseInt(textSize.value, 10)
+        rotation: state.rotation,
+        textSize: clamp(parseInt(textSize.value, 10) || 220, 48, 320),
+        textOffsetY: getTextOffsetY(),
+        lineGapMult: getLineGapMult()
       };
 
       // If editing an existing queued item, update it in place.
@@ -977,8 +1062,9 @@
         const blob = await renderExportBlob(state.currentImgEl, settings, text);
 
         const firstLine = (text || '').split('\n')[0].trim();
-        const baseName = slugify(firstLine || state.images[state.currentIndex].name);
-        const filename = `${String(state.currentIndex + 1).padStart(2,'0')}-${baseName}.png`;
+        const sourceFallbackName = state.images[state.currentIndex]?.name || 'output';
+        const baseName = makeBaseNameFromText(text, sourceFallbackName);
+        const filename = makeUniqueFilename(baseName, editingId);
 
         // thumb
         const thumbBlob = await makeThumbBlob(state.currentImgEl, settings, text);
@@ -1118,6 +1204,7 @@
       try {
         const impactReady = await ensureImpactFontLoaded();
         state.templateImg = await loadTemplate();
+        syncLabelZoneFromTemplate();
         renderPreview();
         updateUI();
         if (!impactReady) {
