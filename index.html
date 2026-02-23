@@ -159,7 +159,7 @@
     canvas {
       width: 100%;
       height: auto;
-      background:#070707;
+      background: transparent;
       border-radius: 12px;
       border:1px solid #bfa47f;
       touch-action: none;
@@ -347,6 +347,8 @@
 
     const state = {
       templateImg: null,
+      templateOverlay: null,
+      frame: { ...FRAME },
 
       // source images (files)
       images: [],
@@ -408,6 +410,7 @@
     function delay(ms) { return new Promise(resolve => setTimeout(resolve, ms)); }
     function getTextOffsetY() { return clamp(parseInt(textOffset.value, 10) || 0, -120, 180); }
     function getLineGapMult() { return clamp(parseFloat(lineGap.value) || 1, 0.4, 2.4); }
+    function getFrameRect() { return state.frame || FRAME; }
 
     function getFontFamily() {
       return 'ImpactBundled';
@@ -447,9 +450,109 @@
 
     function defaultCoverScale(img) {
       // cover the frame (like background-size: cover)
-      const sx = FRAME.w / img.naturalWidth;
-      const sy = FRAME.h / img.naturalHeight;
+      const frame = getFrameRect();
+      const sx = frame.w / img.naturalWidth;
+      const sy = frame.h / img.naturalHeight;
       return Math.max(sx, sy);
+    }
+
+    function detectTransparentFrameRect() {
+      if (!state.templateImg) return { ...FRAME };
+      const c = document.createElement('canvas');
+      c.width = EXPORT_W;
+      c.height = EXPORT_H;
+      const cctx = c.getContext('2d', { willReadFrequently: true });
+      cctx.drawImage(state.templateImg, 0, 0, EXPORT_W, EXPORT_H);
+      const data = cctx.getImageData(0, 0, EXPORT_W, EXPORT_H).data;
+
+      const guess = FRAME;
+      const xMin = clamp(Math.floor(guess.x - 120), 0, EXPORT_W - 1);
+      const xMax = clamp(Math.ceil(guess.x + guess.w + 120), 0, EXPORT_W - 1);
+      const yMin = clamp(Math.floor(guess.y - 120), 0, EXPORT_H - 1);
+      const yMax = clamp(Math.ceil(guess.y + guess.h + 120), 0, EXPORT_H - 1);
+      const ALPHA_CUTOFF = 8;
+      const RATIO_CUTOFF = 0.85;
+      const RUN_MIN = 8;
+
+      const yProbe0 = clamp(Math.floor(guess.y + (guess.h * 0.18)), yMin, yMax);
+      const yProbe1 = clamp(Math.ceil(guess.y + (guess.h * 0.82)), yMin, yMax);
+
+      const colIsTransparent = (x) => {
+        let transparent = 0;
+        let total = 0;
+        for (let y = yProbe0; y <= yProbe1; y += 2) {
+          const i = ((y * EXPORT_W) + x) * 4;
+          total++;
+          if (data[i + 3] <= ALPHA_CUTOFF) transparent++;
+        }
+        return total > 0 && (transparent / total) >= RATIO_CUTOFF;
+      };
+
+      let left = -1, right = -1, run = 0;
+      for (let x = xMin; x <= xMax; x++) {
+        if (colIsTransparent(x)) {
+          run++;
+          if (left < 0 && run >= RUN_MIN) left = x - run + 1;
+        } else {
+          run = 0;
+        }
+      }
+      run = 0;
+      for (let x = xMax; x >= xMin; x--) {
+        if (colIsTransparent(x)) {
+          run++;
+          if (right < 0 && run >= RUN_MIN) right = x + run - 1;
+        } else {
+          run = 0;
+        }
+      }
+
+      if (left < 0 || right < 0 || right <= left + 50) return { ...FRAME };
+
+      const xProbe0 = clamp(Math.floor(left + ((right - left) * 0.18)), 0, EXPORT_W - 1);
+      const xProbe1 = clamp(Math.ceil(left + ((right - left) * 0.82)), 0, EXPORT_W - 1);
+
+      const rowIsTransparent = (y) => {
+        let transparent = 0;
+        let total = 0;
+        for (let x = xProbe0; x <= xProbe1; x += 2) {
+          const i = ((y * EXPORT_W) + x) * 4;
+          total++;
+          if (data[i + 3] <= ALPHA_CUTOFF) transparent++;
+        }
+        return total > 0 && (transparent / total) >= RATIO_CUTOFF;
+      };
+
+      let top = -1, bottom = -1;
+      run = 0;
+      for (let y = yMin; y <= yMax; y++) {
+        if (rowIsTransparent(y)) {
+          run++;
+          if (top < 0 && run >= RUN_MIN) top = y - run + 1;
+        } else {
+          run = 0;
+        }
+      }
+      run = 0;
+      for (let y = yMax; y >= yMin; y--) {
+        if (rowIsTransparent(y)) {
+          run++;
+          if (bottom < 0 && run >= RUN_MIN) bottom = y + run - 1;
+        } else {
+          run = 0;
+        }
+      }
+
+      if (top < 0 || bottom < 0 || bottom <= top + 50) return { ...FRAME };
+
+      // Extend the photo underlay beyond the fully transparent opening so the
+      // entire semi-transparent feather has image behind it.
+      const PAD = 40;
+      const x = clamp(left - PAD, 0, EXPORT_W - 1);
+      const y = clamp(top - PAD, 0, EXPORT_H - 1);
+      const x2 = clamp(right + PAD, 0, EXPORT_W - 1);
+      const y2 = clamp(bottom + PAD, 0, EXPORT_H - 1);
+      return { x, y, w: (x2 - x + 1), h: (y2 - y + 1) };
     }
 
     function detectBottomBarTop() {
@@ -501,6 +604,10 @@
       state.labelZoneBottom = EXPORT_H;
     }
 
+    function syncFrameFromTemplate() {
+      state.frame = detectTransparentFrameRect();
+    }
+
     async function loadTemplate() {
       return new Promise((resolve, reject) => {
         const img = new Image();
@@ -508,6 +615,11 @@
         img.onerror = () => reject(new Error('Failed to load template image. Ensure VOID_IG_TEMPLATE.png is next to index.html'));
         img.src = TEMPLATE_SRC;
       });
+    }
+
+    // Use the template as-is. The PNG already carries the correct transparency/feather.
+    function buildTemplateOverlay() {
+      return state.templateImg || null;
     }
 
     async function loadFileImage(file) {
@@ -614,17 +726,18 @@
 
     function drawImageInFrame(targetCtx, imgEl, settings) {
       if (!imgEl) return;
+      const frame = getFrameRect();
       targetCtx.save();
       targetCtx.beginPath();
-      targetCtx.rect(FRAME.x, FRAME.y, FRAME.w, FRAME.h);
+      targetCtx.rect(frame.x, frame.y, frame.w, frame.h);
       targetCtx.clip();
 
       const base = defaultCoverScale(imgEl);
       const finalScale = base * settings.scale;
       const drawW = imgEl.naturalWidth * finalScale;
       const drawH = imgEl.naturalHeight * finalScale;
-      const frameCx = FRAME.x + FRAME.w / 2;
-      const frameCy = FRAME.y + FRAME.h / 2;
+      const frameCx = frame.x + frame.w / 2;
+      const frameCy = frame.y + frame.h / 2;
 
       targetCtx.translate(frameCx + settings.offsetX, frameCy + settings.offsetY);
       targetCtx.rotate(settings.rotation || 0);
@@ -633,12 +746,23 @@
     }
 
     function drawComposed(targetCtx, imgEl, settings, text, fontPx) {
+      targetCtx.setTransform(1, 0, 0, 1, 0, 0);
+      targetCtx.globalCompositeOperation = 'source-over';
+      targetCtx.globalAlpha = 1;
       targetCtx.clearRect(0, 0, EXPORT_W, EXPORT_H);
-      targetCtx.drawImage(state.templateImg, 0, 0, EXPORT_W, EXPORT_H);
+
+      // 1) Draw the photo first (underlay)
       if (imgEl) {
         drawImageInFrame(targetCtx, imgEl, settings);
       }
-      targetCtx.drawImage(state.templateImg, 0, 0, EXPORT_W, EXPORT_H);
+
+      // 2) Draw the original template on top (uses PNG transparency/feather directly)
+      const overlay = state.templateOverlay || state.templateImg;
+      if (overlay) {
+        targetCtx.drawImage(overlay, 0, 0, EXPORT_W, EXPORT_H);
+      }
+
+      // 3) Draw label on top
       drawLabel(
         targetCtx,
         text,
@@ -879,7 +1003,8 @@
     }
 
     function isInFrame(pos) {
-      return pos.x >= FRAME.x && pos.x <= FRAME.x + FRAME.w && pos.y >= FRAME.y && pos.y <= FRAME.y + FRAME.h;
+      const frame = getFrameRect();
+      return pos.x >= frame.x && pos.x <= frame.x + frame.w && pos.y >= frame.y && pos.y <= frame.y + frame.h;
     }
 
     function pointerDistance(a, b) {
@@ -1005,7 +1130,9 @@
       try {
         if (!state.templateImg) {
           state.templateImg = await loadTemplate();
+          syncFrameFromTemplate();
           syncLabelZoneFromTemplate();
+          state.templateOverlay = buildTemplateOverlay();
         }
 
         const files = Array.from(e.target.files || []).filter(f => f.type.startsWith('image/'));
@@ -1204,7 +1331,9 @@
       try {
         const impactReady = await ensureImpactFontLoaded();
         state.templateImg = await loadTemplate();
+        syncFrameFromTemplate();
         syncLabelZoneFromTemplate();
+        state.templateOverlay = buildTemplateOverlay();
         renderPreview();
         updateUI();
         if (!impactReady) {
